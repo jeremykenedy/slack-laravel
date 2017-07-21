@@ -16,8 +16,8 @@ This package allows you to use [Slack for PHP](https://github.com/maknz/slack) e
         - [Send to Default Channel](#send-to-default-channel)
         - [Send to Different Channel](#send-to-different-channel)
         - [Send to Private Message](#send-to-private-message)
-- [License](#license)
 - [Credits](#credits)
+- [License](#license)
 
 ### Requirements
 
@@ -123,5 +123,5 @@ use Slack;
 * This package was forked and improved. The original package states that it was no longer maintained.
 * This package was forked and modified to be compliant with [MIT](https://opensource.org/licenses/MIT) licencing standards for production use.
 
-## License
+### License
 Slack for Laravel is licensed under the MIT license for both personal and commercial products. Enjoy!
