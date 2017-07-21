@@ -52,6 +52,7 @@ This package allows you to use [Slack for PHP](https://github.com/maknz/slack) e
 ```bash
     php artisan vendor:publish --tag=slacklaravel
 ```
+
 5. [Create an incoming webhook](https://my.slack.com/services/new/incoming-webhook) for each Slack team you'd like to send messages to. You'll need the webhook URL(s) in order to configure this package.
 
 6. Configure Slack for Laravel in your `.env` file by adding and editing the following:
