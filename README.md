@@ -112,7 +112,7 @@ use Slack;
 ```
 
 ###### Send to Private Message
-* Send a message to a different channel
+* Send a message to a private channel
 
 ```php
     Slack::to('@jeremykenedy')->send('Hi Jeremy!');
