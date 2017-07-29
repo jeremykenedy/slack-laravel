@@ -2,8 +2,8 @@
 
 namespace jeremykenedy\Slack\Laravel;
 
-use jeremykenedy\Slack\Client as Client;
 use GuzzleHttp\Client as Guzzle;
+use jeremykenedy\Slack\Client as Client;
 
 class ServiceProviderLaravel4 extends \Illuminate\Support\ServiceProvider
 {
@@ -34,16 +34,16 @@ class ServiceProviderLaravel4 extends \Illuminate\Support\ServiceProvider
             return new Client(
                 $app['config']->get('slack::endpoint'),
                 [
-                    'channel' => $app['config']->get('slack::channel'),
-                    'username' => $app['config']->get('slack::username'),
-                    'icon' => $app['config']->get('slack::icon'),
-                    'link_names' => $app['config']->get('slack::link_names'),
-                    'unfurl_links' => $app['config']->get('slack::unfurl_links'),
-                    'unfurl_media' => is_bool($unfurl_media) ? $unfurl_media : true,
-                    'allow_markdown' => is_bool($allow_markdown) ? $allow_markdown : true,
+                    'channel'                 => $app['config']->get('slack::channel'),
+                    'username'                => $app['config']->get('slack::username'),
+                    'icon'                    => $app['config']->get('slack::icon'),
+                    'link_names'              => $app['config']->get('slack::link_names'),
+                    'unfurl_links'            => $app['config']->get('slack::unfurl_links'),
+                    'unfurl_media'            => is_bool($unfurl_media) ? $unfurl_media : true,
+                    'allow_markdown'          => is_bool($allow_markdown) ? $allow_markdown : true,
                     'markdown_in_attachments' => is_array($markdown_in_attachments) ? $markdown_in_attachments : [],
                 ],
-                new Guzzle
+                new Guzzle()
             );
         });
 
