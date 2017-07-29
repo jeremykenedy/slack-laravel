@@ -47,7 +47,7 @@ return [
     | set on the Slack webhook
     |
     */
-    'icon' => env('DEFAULT_SLACK_ICON', NULL),
+    'icon' => env('DEFAULT_SLACK_ICON', null),
 
     /*
     |-------------------------------------------------------------
@@ -58,7 +58,7 @@ return [
     | by Slack
     |
     */
-    'link_names' => env('DEFAULT_SLACK_LINKNAMES_CONVERTED', FALSE),
+    'link_names' => env('DEFAULT_SLACK_LINKNAMES_CONVERTED', false),
 
     /*
     |-------------------------------------------------------------
@@ -68,7 +68,7 @@ return [
     | Whether Slack should unfurl links to text-based content
     |
     */
-    'unfurl_links' => env('DEFAULT_SLACK_UNFURL_LINKS_STATUS', FALSE),
+    'unfurl_links' => env('DEFAULT_SLACK_UNFURL_LINKS_STATUS', false),
 
     /*
     |-------------------------------------------------------------
@@ -79,7 +79,7 @@ return [
     | as images and YouTube videos
     |
     */
-    'unfurl_media' => env('DEFAULT_SLACK_UNFURL_MEDIA_STATUS', TRUE),
+    'unfurl_media' => env('DEFAULT_SLACK_UNFURL_MEDIA_STATUS', true),
 
     /*
     |-------------------------------------------------------------
@@ -90,7 +90,7 @@ return [
     | language. For formatting options, see Slack's help article: http://goo.gl/r4fsdO
     |
     */
-    'allow_markdown' => env('DEFAULT_SLACK_ALLOW_MARKDOWN', TRUE),
+    'allow_markdown' => env('DEFAULT_SLACK_ALLOW_MARKDOWN', true),
 
     /*
     |-------------------------------------------------------------
