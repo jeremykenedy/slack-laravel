@@ -25,13 +25,19 @@ This package allows you to use [Slack for PHP](https://github.com/maknz/slack) e
 
 ### Installation
 
-1. From your projects root folder in terminal run:
+##### 1. From your projects root folder in terminal run:
 
 ```bash
     composer require jeremykenedy/slack-laravel
 ```
 
-2. Register the package with laravel in `config/app.php` under `providers` with the following:
+##### 2a. Register App (Laravel 5.5 +)
+Uses package auto discovery feature, no need to edit the `config/app.php` file.
+* Skip to [4. Publish Assets](#4.-publish-assets)
+
+
+##### 2b. Register App (Laravel 5.4 and below)
+Register the package with laravel in `config/app.php` under `providers` with the following:
 
 ```php
     'providers' => [
@@ -39,7 +45,8 @@ This package allows you to use [Slack for PHP](https://github.com/maknz/slack) e
     ];
 ```
 
-3. Register the package with laravel in `config/app.php` under `aliases` with the following:
+##### 3. Register App Alias (Laravel 5.4 and below)
+Register the package with laravel in `config/app.php` under `aliases` with the following:
 
 ```php
     'aliases' => [
@@ -47,15 +54,18 @@ This package allows you to use [Slack for PHP](https://github.com/maknz/slack) e
     ];
 ```
 
-4. Publish the config file from your projects root folder in terminal by running:
+##### 4. Publish Assets (All)
+Publish the config file from your projects root folder in terminal by running:
 
 ```bash
     php artisan vendor:publish --tag=slacklaravel
 ```
 
-5. [Create an incoming webhook](https://my.slack.com/services/new/incoming-webhook) for each Slack team you'd like to send messages to. You'll need the webhook URL(s) in order to configure this package.
+##### 5. Create Webhook (All)
+[Create an incoming webhook](https://my.slack.com/services/new/incoming-webhook) for each Slack team you'd like to send messages to. You'll need the webhook URL(s) in order to configure this package.
 
-6. Configure Slack for Laravel in your `.env` file by adding and editing the following:
+##### 6. Configure `.env` (All)
+Configure Slack for Laravel in your `.env` file by adding and editing the following:
 
 ```php
 DEFAULT_SLACK_WEBHOOK_ENDPOINT=https://hooks.slack.com/services/XXXXXXXX/XXXXXXXX/XXXXXXXXXXXXXX
