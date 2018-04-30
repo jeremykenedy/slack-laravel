@@ -128,6 +128,26 @@ use Slack;
     Slack::to('@jeremykenedy')->send('Hi Jeremy!');
 ```
 
+#### Faking in tests
+
+Use the `fake on the Facade`
+
+```php
+    Slack::fake()
+```
+
+This provides the following
+
+```php
+    Slack::assertMessageSent(function($messages) {
+        // search in all messages
+    });
+
+    Slack::assertMessageSentTo($channel, function($messages) {
+        // search in all messages posted to $channel
+    });
+```
+
 ### Credits
 * Full development credit must go to [maknz](https://github.com/maknz/slack-laravel).
 * This package was forked and improved. The original package states that it was no longer maintained.
