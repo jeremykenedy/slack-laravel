@@ -4,8 +4,8 @@
 [![Latest Stable Version](https://poser.pugx.org/jeremykenedy/slack-laravel/v/stable.svg)](https://packagist.org/packages/jeremykenedy/slack-laravel)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-Laravel 5 integration for the Slack, including facades and service providers.
-This package allows you to use [Slack for PHP](https://github.com/maknz/slack) easily and elegantly in your Laravel 5 app.
+Laravel integration for the Slack, including facades and service providers.
+This package allows you to use [Slack for PHP](https://github.com/maknz/slack) easily and elegantly in your Laravel app.
 
 - [Requirements](#requirements)
 - [Installation](#installation)
