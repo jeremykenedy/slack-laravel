@@ -7,17 +7,26 @@
 Laravel integration for the Slack, including facades and service providers.
 This package allows you to use [Slack for PHP](https://github.com/maknz/slack) easily and elegantly in your Laravel app.
 
-- [Requirements](#requirements)
-- [Installation](#installation)
-- [Configuration](#configuration)
-- [Usage](#usage)
-    - [1. Include Class](#1.-include-class)
-    - [2. Trigging Slack Messages](#2.-trigging-slack-messages)
-        - [Send to Default Channel](#send-to-default-channel)
-        - [Send to Different Channel](#send-to-different-channel)
-        - [Send to Private Message](#send-to-private-message)
-- [Credits](#credits)
-- [License](#license)
+- [Slack for Laravel](#slack-for-laravel)
+    - [Requirements](#requirements)
+    - [Installation](#installation)
+        - [1. From your projects root folder in terminal run:](#1-from-your-projects-root-folder-in-terminal-run)
+        - [2a. Register App (Laravel 5.5 +)](#2a-register-app-laravel-55)
+        - [2b. Register App (Laravel 5.4 and below)](#2b-register-app-laravel-54-and-below)
+        - [3. Register App Alias (Laravel 5.4 and below)](#3-register-app-alias-laravel-54-and-below)
+        - [4. Publish Assets (All)](#4-publish-assets-all)
+        - [5. Create Webhook (All)](#5-create-webhook-all)
+        - [6. Configure `.env` (All)](#6-configure-env-all)
+    - [Configuration](#configuration)
+    - [Usage](#usage)
+    - [1. Include Class](#1-include-class)
+    - [2. Trigging Slack Messages](#2-trigging-slack-messages)
+          - [Send to Default Channel](#send-to-default-channel)
+          - [Send to Different Channel](#send-to-different-channel)
+          - [Send to Private Message](#send-to-private-message)
+      - [Faking in tests](#faking-in-tests)
+    - [Credits](#credits)
+    - [License](#license)
 
 ### Requirements
 
@@ -99,10 +108,10 @@ DEFAULT_SLACK_MARKDOWN_FIELDS="'text','title'"
 ### Usage
 
 ### 1. Include Class
-* In the controller file that you will use this be sure to include the `Slack class in the head of the file:
+* Use the facade anywhere:
 
 ```php
-use Slack;
+\Slack::send('Hey');
 ```
 
 ### 2. Trigging Slack Messages
@@ -130,7 +139,7 @@ use Slack;
 
 #### Faking in tests
 
-Use the `fake on the Facade`
+Use the `fake` method on the Facade
 
 ```php
     Slack::fake()

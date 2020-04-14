@@ -2,7 +2,7 @@
 
 namespace jeremykenedy\Slack\Laravel;
 
-use jeremykenedy\Slack\Fakes\SlackFake;
+use jeremykenedy\Slack\Laravel\Fakes\SlackFake;
 
 class Facade extends \Illuminate\Support\Facades\Facade
 {

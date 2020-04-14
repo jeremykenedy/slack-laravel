@@ -1,6 +1,6 @@
 <?php
 
-namespace jeremykenedy\Slack\Fakes;
+namespace jeremykenedy\Slack\Laravel\Fakes;
 
 use jeremykenedy\Slack\Message;
 

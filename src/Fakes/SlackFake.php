@@ -1,8 +1,9 @@
 <?php
 
-namespace jeremykenedy\Slack\Fakes;
+namespace jeremykenedy\Slack\Laravel\Fakes;
 
 use jeremykenedy\Slack\Client;
+use jeremykenedy\Slack\Message;
 use PHPUnit_Framework_Assert as PHPUnit;
 
 class SlackFake extends Client
