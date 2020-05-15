@@ -1,6 +1,6 @@
 {
     "name": "jeremykenedy/slack-laravel",
-    "description": "Laravel 5 integration for the jeremykenedy/slack package, including facades and service providers.",
+    "description": "Laravel integration for the jeremykenedy/slack package, including facades and service providers.",
     "keywords": ["slack", "laravel"],
     "license": "MIT",
     "authors": [
