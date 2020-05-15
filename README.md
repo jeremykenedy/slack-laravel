@@ -1,11 +1,12 @@
+![Slack for Laravel](https://github-project-images.s3-us-west-2.amazonaws.com/logos/laravel-slack-logo.png)
+
 # Slack for Laravel
+Laravel integration for the Slack, including facades and service providers. This package allows you to use [Slack for PHP](https://github.com/maknz/slack) easily and elegantly in your Laravel app.
 
 [![Total Downloads](https://poser.pugx.org/jeremykenedy/slack-laravel/d/total.svg)](https://packagist.org/packages/jeremykenedy/slack-laravel)
 [![Latest Stable Version](https://poser.pugx.org/jeremykenedy/slack-laravel/v/stable.svg)](https://packagist.org/packages/jeremykenedy/slack-laravel)
+[![StyleCI](https://github.styleci.io/repos/97894373/shield?branch=master)](https://github.styleci.io/repos/97894373)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-
-Laravel integration for the Slack, including facades and service providers.
-This package allows you to use [Slack for PHP](https://github.com/maknz/slack) easily and elegantly in your Laravel app.
 
 - [Slack for Laravel](#slack-for-laravel)
     - [Requirements](#requirements)
@@ -29,11 +30,9 @@ This package allows you to use [Slack for PHP](https://github.com/maknz/slack) e
     - [License](#license)
 
 ### Requirements
-
 * [Laravel 5.3 or newer](https://laravel.com/docs/installation)
 
 ### Installation
-
 ##### 1. From your projects root folder in terminal run:
 
 ```bash
@@ -158,7 +157,7 @@ This provides the following
 ```
 
 ### Credits
-* Full development credit must go to [maknz](https://github.com/maknz/slack-laravel).
+* Most development credit must go to [maknz](https://github.com/maknz/slack-laravel).
 * This package was forked and improved. The original package states that it was no longer maintained.
 * This package was forked and modified to be compliant with [MIT](https://opensource.org/licenses/MIT) licencing standards for production use.
 
