@@ -71,6 +71,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
 
             case 5:
             case 6:
+            case 7:
               return new ServiceProviderLaravel5($app);
 
             default:
