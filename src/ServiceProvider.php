@@ -65,18 +65,11 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
 
         $version = intval($app::VERSION);
 
-        switch ($version) {
-            case 4:
+        if ($version === 4) {
               return new ServiceProviderLaravel4($app);
-
-            case 5:
-            case 6:
-            case 7:
-              return new ServiceProviderLaravel5($app);
-
-            default:
-              throw new RuntimeException('Your version of Laravel is not supported');
         }
+        
+        return new ServiceProviderLaravel5($app);
     }
 
     /**
