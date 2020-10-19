@@ -2,8 +2,6 @@
 
 namespace jeremykenedy\Slack\Laravel;
 
-use RuntimeException;
-
 class ServiceProvider extends \Illuminate\Support\ServiceProvider
 {
     /**
@@ -66,9 +64,9 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
         $version = intval($app::VERSION);
 
         if ($version === 4) {
-              return new ServiceProviderLaravel4($app);
+            return new ServiceProviderLaravel4($app);
         }
-        
+
         return new ServiceProviderLaravel5($app);
     }
 
