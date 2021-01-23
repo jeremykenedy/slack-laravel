@@ -63,7 +63,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
 
         if ($app instanceof \Laravel\Lumen\Application) {
             return new ServiceProviderLaravel5($app);
-        } elseif (intval($app::VERSION) === 5) {
+        } elseif (intval($app::VERSION) === 4) {
             return new ServiceProviderLaravel4($app);
         } else {
             return new ServiceProviderLaravel5($app);
