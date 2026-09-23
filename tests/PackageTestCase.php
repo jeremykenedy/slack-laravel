@@ -13,8 +13,8 @@ abstract class PackageTestCase extends TestCase
 {
     protected function withApplication($callback, array $config = [], $applicationClass = Application::class)
     {
-        if (version_compare(Application::VERSION, '5.0', '<')) {
-            $this->markTestSkipped('Laravel 4 uses the legacy provider tests.');
+        if (! class_exists(Application::class) || version_compare(Application::VERSION, '5.0', '<')) {
+            $this->markTestSkipped('These tests require Laravel 5 or newer.');
         }
 
         $path = sys_get_temp_dir().'/slack-laravel-'.uniqid();

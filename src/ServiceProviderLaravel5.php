@@ -7,6 +7,7 @@ use Illuminate\Support\ServiceProvider as LaravelServiceProvider;
 use jeremykenedy\Slack\Client;
 use jeremykenedy\Slack\Laravel\Console\InstallCommand;
 use jeremykenedy\Slack\Laravel\Console\UpdateCommand;
+use Laravel\Lumen\Application;
 
 class ServiceProviderLaravel5 extends LaravelServiceProvider
 {
@@ -17,6 +18,10 @@ class ServiceProviderLaravel5 extends LaravelServiceProvider
      */
     public function boot()
     {
+        if ($this->app instanceof Application) {
+            return;
+        }
+
         $this->publishes([
             __DIR__.'/config/config.php' => config_path('slack.php'),
         ], 'slacklaravel');
@@ -29,6 +34,10 @@ class ServiceProviderLaravel5 extends LaravelServiceProvider
      */
     public function register()
     {
+        if ($this->app instanceof Application) {
+            $this->app->configure('slack');
+        }
+
         $this->mergeConfigFrom(__DIR__.'/config/config.php', 'slack');
 
         $this->app->singleton('jeremykenedy.slack', function ($app) {

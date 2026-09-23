@@ -6,7 +6,7 @@ Composer updates do not publish files, rewrite configuration, install frontend p
 
 ## Application configuration
 
-On Laravel 5 and newer, `php artisan slack:install` and `php artisan slack:update` both create `config/slack.php` only when it is missing. Existing files remain unchanged, including custom settings and webhook endpoints. The commands do not change `.env` or clear configuration caches.
+On Laravel 5 and newer and on Lumen, `php artisan slack:install` and `php artisan slack:update` both create `config/slack.php` only when it is missing. Existing files remain unchanged, including custom settings and webhook endpoints. The commands do not change `.env` or clear configuration caches.
 
 Review newly published defaults before deploying. If configuration is cached, rebuild it using `php artisan config:cache` after changing your environment or configuration.
 
@@ -22,11 +22,19 @@ The attachment Markdown setting now parses `text,title` and the previously docum
 
 `assertMessageSentTo('#channel')` now fails when messages were only sent elsewhere. Tests that depended on the earlier false positive must send to the expected channel or change their assertion.
 
-The fake supports both legacy and namespaced PHPUnit assertion classes. Laravel 4 continues to use its existing `slack::` settings and service provider. The new publishing commands target Laravel 5 and newer.
+The fake supports both legacy and namespaced PHPUnit assertion classes. Laravel 4 continues to use its existing `slack::` settings and service provider. The new publishing commands target Laravel 5 and newer and Lumen.
+
+## Lumen
+
+Lumen applications register `jeremykenedy\Slack\Laravel\ServiceProvider` manually in `bootstrap/app.php`. The provider detects Lumen before checking Laravel's version constant, loads the application's `slack` configuration, and fills in missing defaults. Existing calls to `$app->configure('slack')` remain valid.
+
+The client binding, facade, and testing fakes work the same way on Lumen. Enable `$app->withFacades()` when using the facade; constructor injection does not require it. See [Lumen registration](../README.md#lumen-registration) for the bootstrap example.
+
+Use `slack:install` or `slack:update` to publish missing configuration. These commands support Lumen without Laravel's `config_path()` helper and do not recommend the unavailable `config:cache` command.
 
 ## Runtime compatibility
 
-Production source files retain PHP 5.6-compatible syntax. CI exercises every Laravel 5 minor release, each later major release through Laravel 13, and the Laravel 4.2 provider. Current runtime testing includes PHP 8.5 and PHPUnit 13.
+Production source files retain PHP 5.6-compatible syntax. CI exercises every Laravel 5 minor release, each later major release through Laravel 13, and the Laravel 4.2 provider. Separate Lumen jobs cover every 5.x minor release and each later major release through Lumen 11. Current runtime testing includes PHP 8.5 and PHPUnit 13.
 
 The upstream `jeremykenedy/slack` 2.4 client declares an implicitly nullable constructor argument. PHP 8.4 and newer emit a deprecation when that class is loaded. This does not fail the package tests, but applications that promote dependency deprecations to exceptions should account for it before upgrading PHP. The integration does not suppress that warning or patch vendor files.
 

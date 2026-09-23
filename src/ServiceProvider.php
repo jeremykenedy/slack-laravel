@@ -2,6 +2,8 @@
 
 namespace jeremykenedy\Slack\Laravel;
 
+use Laravel\Lumen\Application;
+
 class ServiceProvider extends \Illuminate\Support\ServiceProvider
 {
     /**
@@ -60,9 +62,11 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
     {
         $app = $this->app;
 
-        $version = intval($app::VERSION);
+        if ($app instanceof Application) {
+            return new ServiceProviderLaravel5($app);
+        }
 
-        if ($version === 4) {
+        if (intval($app::VERSION) === 4) {
             return new ServiceProviderLaravel4($app);
         }
 

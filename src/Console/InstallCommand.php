@@ -4,6 +4,7 @@ namespace jeremykenedy\Slack\Laravel\Console;
 
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
+use Laravel\Lumen\Application;
 
 class InstallCommand extends Command
 {
@@ -22,7 +23,9 @@ class InstallCommand extends Command
 
     public function handle()
     {
-        $path = config_path('slack.php');
+        $path = function_exists('config_path')
+            ? config_path('slack.php')
+            : $this->laravel->basePath('config/slack.php');
         $directory = dirname($path);
 
         if ($this->files->exists($path)) {
@@ -46,7 +49,9 @@ class InstallCommand extends Command
 
         $this->info('Slack configuration published to '.$path.'.');
         $this->info('Set DEFAULT_SLACK_WEBHOOK_ENDPOINT in your environment.');
-        $this->info('If configuration is cached, rebuild it with php artisan config:cache.');
+        if (! $this->laravel instanceof Application) {
+            $this->info('If configuration is cached, rebuild it with php artisan config:cache.');
+        }
 
         return 0;
     }

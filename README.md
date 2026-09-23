@@ -6,7 +6,7 @@
     </picture>
 </p>
 
-<p align="center">Send Slack webhook messages from Laravel with a facade, container bindings, and testing fakes.</p>
+<p align="center">Send Slack webhook messages from Laravel or Lumen with a facade, container bindings, and testing fakes.</p>
 
 <p align="center">
     <a href="https://packagist.org/packages/jeremykenedy/slack-laravel"><img src="https://poser.pugx.org/jeremykenedy/slack-laravel/d/total.svg" alt="Total Downloads"></a>
@@ -22,6 +22,7 @@
 - [Requirements](#requirements)
 - [Installation](#installation)
     - [Manual Registration](#manual-registration)
+    - [Lumen Registration](#lumen-registration)
 - [Quick Start](#quick-start)
     - [Message Options](#message-options)
     - [Dependency Injection](#dependency-injection)
@@ -51,14 +52,25 @@
 | 12 | 8.2, 8.3, 8.4, 8.5 | Package discovery |
 | 13 | 8.3, 8.4, 8.5 | Package discovery |
 
-These are compatibility checks, not a recommendation to run an unsupported PHP or Laravel release. Your application must also meet its Laravel version's requirements. The legacy Laravel 4 provider and `slack::` configuration bindings remain available for existing installations.
+| Lumen | PHP versions exercised in CI | Registration |
+|-------|------------------------------|--------------|
+| 5.0 to 5.3 | 5.6 | Manual |
+| 5.4 | 7.0 | Manual |
+| 5.5 to 5.7 | 7.1 | Manual |
+| 5.8 and 6 | 7.2 | Manual |
+| 7 and 8 | 7.3 | Manual |
+| 9 | 8.0 | Manual |
+| 10 | 8.1 | Manual |
+| 11 | 8.2, 8.5 | Manual |
+
+These are compatibility checks, not a recommendation to run an unsupported PHP or framework release. Your application must also meet its framework version's requirements. The legacy Laravel 4 provider and `slack::` configuration bindings remain available for existing installations.
 
 The package runs on the server. Blade, Livewire, Vue, React, and Svelte applications use the same PHP integration. There are no package views, CSS assets, or JavaScript dependencies.
 
 ## Requirements
 
 - PHP 5.6.4 or newer, with `mbstring` enabled.
-- Laravel and the PHP extensions required by your Laravel version.
+- Laravel or Lumen and the PHP extensions required by your framework version.
 - An incoming webhook from your Slack workspace.
 
 The existing `jeremykenedy/slack` 2.x dependency and PHP minimum are unchanged. See the [upgrade notes](docs/upgrading.md) for compatibility details and the upstream PHP 8.4+ deprecation.
@@ -70,9 +82,9 @@ composer require jeremykenedy/slack-laravel
 php artisan slack:install
 ```
 
-Laravel 5.5 and newer discover the provider and `Slack` alias automatically. On older Laravel versions, register them first using the instructions below.
+Laravel 5.5 and newer discover the provider and `Slack` alias automatically. On older Laravel versions and Lumen, register the provider first using the instructions below.
 
-The install command detects `config/slack.php` and leaves an existing file unchanged. It runs without prompts, does not send a test message, and does not edit `.env`. Install/update commands are available on Laravel 5 and newer.
+The install command detects `config/slack.php` and leaves an existing file unchanged. It runs without prompts, does not send a test message, and does not edit `.env`. Install/update commands are available on Laravel 5 and newer and on Lumen.
 
 [Create an incoming webhook](https://docs.slack.dev/messaging/sending-messages-using-incoming-webhooks/) and set its URL in your application's environment:
 
@@ -101,6 +113,26 @@ The original publish command remains available:
 ```bash
 php artisan vendor:publish --tag=slacklaravel
 ```
+
+### Lumen Registration
+
+After installing the Composer package, register the provider in `bootstrap/app.php`, after creating `$app` and before returning it:
+
+```php
+$app->register(jeremykenedy\Slack\Laravel\ServiceProvider::class);
+```
+
+The provider loads `config/slack.php` and merges any missing package defaults. An existing `$app->configure('slack')` call can stay in place. Constructor injection works without enabling facades.
+
+To use the facade, enable facades in the same bootstrap file. Add the alias only if you want to call `\Slack` instead of importing the package facade:
+
+```php
+$app->withFacades();
+
+class_alias(jeremykenedy\Slack\Laravel\Facade::class, 'Slack');
+```
+
+Run `php artisan slack:install` to create `config/slack.php` if it is missing. Both `slack:install` and `slack:update` preserve existing files. Use these package commands on Lumen; Laravel's `vendor:publish` and `config:cache` commands are not required or registered by this package.
 
 ## Quick Start
 
@@ -151,16 +183,16 @@ class SendReleaseNotice
 
 ## Features
 
-- Laravel package discovery and manual provider registration.
+- Laravel package discovery and manual Laravel/Lumen provider registration.
 - A shared client available through the facade or constructor injection.
 - Existing environment variables and configuration publishing support.
 - Install and update commands that preserve application configuration.
 - Message fakes with channel-specific assertions and no webhook requests.
-- Compatibility tests across legacy and current Laravel releases.
+- Compatibility tests across legacy and current Laravel and Lumen releases.
 
 ## Configuration
 
-Settings live in `config/slack.php`. Unpublished settings fall back to the package defaults on Laravel 5 and newer.
+Settings live in `config/slack.php`. Unpublished settings fall back to the package defaults on Laravel 5 and newer and on Lumen.
 
 | Key | Environment variable | Default |
 |-----|----------------------|---------|
@@ -242,7 +274,7 @@ composer test
 
 Run `pint --test` with [Laravel Pint](https://laravel.com/docs/pint) installed on a current PHP runtime. Pint is kept out of the package's dependencies so older PHP installations can still resolve the package and its tests.
 
-GitHub Actions runs the suite on PHP 5.6 through 8.5, Laravel 4.2 through 13, and Guzzle 4 through 7. Version-specific provider tests are skipped on other Laravel versions. Tests use isolated configuration directories and fake HTTP clients; they do not send messages to Slack.
+GitHub Actions runs the suite on PHP 5.6 through 8.5, Laravel 4.2 through 13, Lumen 5.0 through 11, and Guzzle 4 through 7. Lumen jobs install `laravel/lumen-framework` in place of `laravel/framework` so Laravel helpers cannot hide Lumen compatibility failures. Version-specific provider tests run only on their matching framework. Tests use isolated configuration directories and fake HTTP clients; they do not send messages to Slack.
 
 The formatting job also audits the current dependency set. Older compatibility jobs allow historical dependencies so they can exercise those releases; that does not certify old framework dependencies as secure.
 

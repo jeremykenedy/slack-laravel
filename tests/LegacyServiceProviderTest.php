@@ -61,7 +61,7 @@ class LegacyServiceProviderTest extends TestCase
 
     private function withApplication($callback, array $settings = [])
     {
-        if (version_compare(Application::VERSION, '5.0', '>=')) {
+        if (! class_exists(Application::class) || version_compare(Application::VERSION, '5.0', '>=')) {
             $this->markTestSkipped('This provider is specific to Laravel 4.');
         }
 
