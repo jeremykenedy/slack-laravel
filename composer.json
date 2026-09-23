@@ -17,10 +17,24 @@
         "php": ">=5.6.4",
         "jeremykenedy/slack": "~2.0"
     },
+    "require-dev": {
+        "guzzlehttp/guzzle": "^4.0|^5.0|^6.0|^7.0",
+        "laravel/framework": "^4.2|^5.0|^6.0|^7.0|^8.0|^9.0|^10.0|^11.0|^12.0|^13.0",
+        "phpunit/phpunit": "^5.7|^6.5|^7.5|^8.5|^9.6|^10.5|^11.5|^12.5|^13.0"
+    },
     "autoload": {
         "psr-4": {
             "jeremykenedy\\Slack\\Laravel\\": "src/"
         }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "jeremykenedy\\Slack\\Laravel\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": "phpunit",
+        "lint": "@php tests/lint.php"
     },
     "extra": {
         "laravel": {

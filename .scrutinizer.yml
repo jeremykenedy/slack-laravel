@@ -1,0 +1,32 @@
+build:
+    image: default-jammy
+    nodes:
+        analysis:
+            environment:
+                php:
+                    version: '8.3'
+                    ini:
+                        xdebug.mode: coverage
+            dependencies:
+                override:
+                    - composer update --no-interaction --prefer-dist
+            tests:
+                override:
+                    - php-scrutinizer-run
+                    - command: vendor/bin/phpunit --coverage-filter src --coverage-clover build/coverage.xml
+                      coverage:
+                          file: build/coverage.xml
+                          format: clover
+
+filter:
+    paths:
+        - 'src/*'
+    excluded_paths:
+        - 'tests/*'
+        - 'vendor/*'
+
+checks:
+    php: true
+
+tools:
+    external_code_coverage: false

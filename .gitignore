@@ -29,3 +29,6 @@ composer.phar
 composer.lock
 .DS_Store
 /.phpintel
+/.phpunit.cache
+/.phpunit.result.cache
+/build

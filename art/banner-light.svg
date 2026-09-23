@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 200" role="img" aria-labelledby="title description">
+  <title id="title">Slack for Laravel</title>
+  <desc id="description">Slack webhooks, Laravel integration, and message testing.</desc>
+  <rect width="800" height="200" rx="16" fill="#fff" stroke="#e5e7eb"/>
+  <g transform="translate(570, 36)">
+    <rect x="20" y="4" width="152" height="96" rx="14" fill="#eff6ff" stroke="#60a5fa"/>
+    <rect x="0" y="34" width="156" height="94" rx="14" fill="#f5f3ff" stroke="#a78bfa"/>
+    <path d="M24 126v13l19-13" fill="#f5f3ff" stroke="#a78bfa" stroke-linejoin="round"/>
+    <circle cx="28" cy="60" r="8" fill="#8b5cf6"/>
+    <rect x="46" y="54" width="70" height="5" rx="2.5" fill="#6d28d9"/>
+    <rect x="46" y="64" width="46" height="4" rx="2" fill="#c4b5fd"/>
+    <rect x="20" y="84" width="115" height="5" rx="2.5" fill="#c4b5fd"/>
+    <rect x="20" y="96" width="86" height="5" rx="2.5" fill="#c4b5fd"/>
+    <circle cx="158" cy="111" r="19" fill="#f0fdf4" stroke="#22c55e"/>
+    <path d="m150 111 5 5 10-11" fill="none" stroke="#166534" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <g font-family="system-ui, -apple-system, 'Segoe UI', sans-serif">
+    <text x="40" y="80" font-size="40" font-weight="700" letter-spacing="-.5" fill="#0f172a">Slack for Laravel</text>
+    <text x="40" y="111" font-size="14" fill="#64748b">Send messages. Keep your application connected.</text>
+    <g font-size="10" font-weight="500" text-anchor="middle" stroke-width=".8">
+      <rect x="40" y="132" width="82" height="22" rx="11" fill="#f5f3ff" stroke="#a78bfa"/>
+      <text x="81" y="147" fill="#6d28d9">Webhooks</text>
+      <rect x="130" y="132" width="72" height="22" rx="11" fill="#eff6ff" stroke="#60a5fa"/>
+      <text x="166" y="147" fill="#1e40af">Facades</text>
+      <rect x="210" y="132" width="90" height="22" rx="11" fill="#f0fdf4" stroke="#22c55e"/>
+      <text x="255" y="147" fill="#166534">Testing fakes</text>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,126 @@
+name: Tests
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: tests-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  tests:
+    name: PHP ${{ matrix.php }} / Laravel ${{ matrix.laravel }} / Guzzle ${{ matrix.guzzle }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {php: '5.6', laravel: '~4.2.0', phpunit: '^5.7', guzzle: '^6.0', composer: 'v2.2'}
+          - {php: '5.6', laravel: '~5.0.0', phpunit: '^5.7', guzzle: '^4.0', composer: 'v2.2'}
+          - {php: '5.6', laravel: '~5.1.0', phpunit: '^5.7', guzzle: '^5.0', composer: 'v2.2'}
+          - {php: '5.6', laravel: '~5.2.0', phpunit: '^5.7', guzzle: '^6.0', composer: 'v2.2'}
+          - {php: '5.6', laravel: '~5.3.0', phpunit: '^5.7', guzzle: '^6.0', composer: 'v2.2'}
+          - {php: '7.0', laravel: '~5.4.0', phpunit: '^6.5', guzzle: '^6.0', composer: 'v2.2'}
+          - {php: '7.1', laravel: '~5.5.0', phpunit: '^7.5', guzzle: '^6.0', composer: 'v2.2'}
+          - {php: '7.1', laravel: '~5.6.0', phpunit: '^7.5', guzzle: '^6.0', composer: 'v2.2'}
+          - {php: '7.1', laravel: '~5.7.0', phpunit: '^7.5', guzzle: '^6.0', composer: 'v2.2'}
+          - {php: '7.2', laravel: '~5.8.0', phpunit: '^8.5', guzzle: '^6.0', composer: 'v2'}
+          - {php: '7.2', laravel: '^6.0', phpunit: '^8.5', guzzle: '^6.0', composer: 'v2'}
+          - {php: '7.3', laravel: '^7.0', phpunit: '^9.6', guzzle: '^7.0', composer: 'v2'}
+          - {php: '7.3', laravel: '^8.0', phpunit: '^9.6', guzzle: '^7.0', composer: 'v2'}
+          - {php: '8.0', laravel: '^8.0', phpunit: '^9.6', guzzle: '^7.0', composer: 'v2'}
+          - {php: '8.0', laravel: '^9.0', phpunit: '^9.6', guzzle: '^7.0', composer: 'v2'}
+          - {php: '8.1', laravel: '^10.0', phpunit: '^10.5', guzzle: '^7.0', composer: 'v2'}
+          - {php: '8.2', laravel: '^11.0', phpunit: '^11.5', guzzle: '^7.0', composer: 'v2'}
+          - {php: '8.2', laravel: '^12.0', phpunit: '^11.5', guzzle: '^7.0', composer: 'v2'}
+          - {php: '8.3', laravel: '^12.0', phpunit: '^12.5', guzzle: '^7.0', composer: 'v2'}
+          - {php: '8.3', laravel: '^13.0', phpunit: '^12.5', guzzle: '^7.0', composer: 'v2'}
+          - {php: '8.4', laravel: '^12.0', phpunit: '^13.0', guzzle: '^7.0', composer: 'v2'}
+          - {php: '8.4', laravel: '^13.0', phpunit: '^13.0', guzzle: '^7.0', composer: 'v2'}
+          - {php: '8.5', laravel: '^12.0', phpunit: '^13.0', guzzle: '^7.0', composer: 'v2'}
+          - {php: '8.5', laravel: '^13.0', phpunit: '^13.0', guzzle: '^7.0', composer: 'v2'}
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+      - uses: shivammathur/setup-php@b604ade2a87db23f8871b7182e69ec5e75effb45
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: mbstring, dom, curl, xml, xmlwriter, ${{ matrix.php == '5.6' && 'mcrypt' || '' }}
+          tools: composer:${{ matrix.composer }}
+          coverage: none
+      - name: Install compatibility dependencies
+        env:
+          COMPOSER_NO_SECURITY_BLOCKING: '1'
+        run: >-
+          composer update --no-interaction --prefer-dist --no-plugins
+          --with 'laravel/framework:${{ matrix.laravel }}'
+          --with 'phpunit/phpunit:${{ matrix.phpunit }}'
+          --with 'guzzlehttp/guzzle:${{ matrix.guzzle }}'
+      - run: composer --no-plugins validate --strict
+      - run: composer --no-plugins lint
+      - run: composer --no-plugins test
+
+  lumen:
+    name: PHP ${{ matrix.php }} / Lumen ${{ matrix.lumen }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {php: '5.6', lumen: '~5.0.0', phpunit: '^5.7', composer: 'v2.2'}
+          - {php: '5.6', lumen: '~5.1.0', phpunit: '^5.7', composer: 'v2.2'}
+          - {php: '5.6', lumen: '~5.2.0', phpunit: '^5.7', composer: 'v2.2'}
+          - {php: '5.6', lumen: '~5.3.0', phpunit: '^5.7', composer: 'v2.2'}
+          - {php: '7.0', lumen: '~5.4.0', phpunit: '^6.5', composer: 'v2.2'}
+          - {php: '7.1', lumen: '~5.5.0', phpunit: '^7.5', composer: 'v2.2'}
+          - {php: '7.1', lumen: '~5.6.0', phpunit: '^7.5', composer: 'v2.2'}
+          - {php: '7.1', lumen: '~5.7.0', phpunit: '^7.5', composer: 'v2.2'}
+          - {php: '7.2', lumen: '~5.8.0', phpunit: '^8.5', composer: 'v2'}
+          - {php: '7.2', lumen: '^6.0', phpunit: '^8.5', composer: 'v2'}
+          - {php: '7.3', lumen: '^7.0', phpunit: '^9.6', composer: 'v2'}
+          - {php: '7.3', lumen: '^8.0', phpunit: '^9.6', composer: 'v2'}
+          - {php: '8.0', lumen: '^9.0', phpunit: '^9.6', composer: 'v2'}
+          - {php: '8.1', lumen: '^10.0', phpunit: '^10.5', composer: 'v2'}
+          - {php: '8.2', lumen: '^11.0', phpunit: '^11.5', composer: 'v2'}
+          - {php: '8.5', lumen: '^11.0', phpunit: '^13.0', composer: 'v2'}
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+      - uses: shivammathur/setup-php@b604ade2a87db23f8871b7182e69ec5e75effb45
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: mbstring, dom, curl, xml, xmlwriter, ${{ matrix.php == '5.6' && 'mcrypt' || '' }}
+          tools: composer:${{ matrix.composer }}
+          coverage: none
+      - name: Use Lumen without Laravel framework helpers
+        run: |
+          composer remove --dev laravel/framework --no-update --no-interaction --no-plugins
+          composer require --dev 'laravel/lumen-framework:${{ matrix.lumen }}' --no-update --no-interaction --no-plugins
+      - name: Install compatibility dependencies
+        env:
+          COMPOSER_NO_SECURITY_BLOCKING: '1'
+        run: >-
+          composer update --no-interaction --prefer-dist --no-plugins
+          --with 'phpunit/phpunit:${{ matrix.phpunit }}'
+      - run: composer --no-plugins validate --strict
+      - run: composer --no-plugins lint
+      - run: composer --no-plugins test
+
+  quality:
+    name: Formatting and dependency audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+      - uses: shivammathur/setup-php@b604ade2a87db23f8871b7182e69ec5e75effb45
+        with:
+          php-version: '8.5'
+          tools: composer:v2, pint
+          coverage: none
+      - run: composer update --no-interaction --prefer-dist
+      - run: composer validate --strict
+      - run: pint --test
+      - run: composer audit

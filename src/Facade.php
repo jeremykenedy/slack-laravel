@@ -13,7 +13,18 @@ class Facade extends \Illuminate\Support\Facades\Facade
      */
     public static function fake()
     {
-        static::swap(new SlackFake(static::$app['config']->get('slack.endpoint')));
+        $client = static::getFacadeRoot();
+
+        static::swap(new SlackFake($client->getEndpoint(), [
+            'channel' => $client->getDefaultChannel(),
+            'username' => $client->getDefaultUsername(),
+            'icon' => $client->getDefaultIcon(),
+            'link_names' => $client->getLinkNames(),
+            'unfurl_links' => $client->getUnfurlLinks(),
+            'unfurl_media' => $client->getUnfurlMedia(),
+            'allow_markdown' => $client->getAllowMarkdown(),
+            'markdown_in_attachments' => $client->getMarkdownInAttachments(),
+        ]));
     }
 
     /**

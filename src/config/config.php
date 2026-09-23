@@ -102,7 +102,11 @@ return [
     | should be formatted as Markdown.
     |
     */
-    'markdown_in_attachments' => [env('DEFAULT_SLACK_MARKDOWN_FIELDS')],
+    'markdown_in_attachments' => array_values(array_filter(array_map(function ($field) {
+        return trim($field, " \t\n\r\0\x0B'\"");
+    }, explode(',', (string) env('DEFAULT_SLACK_MARKDOWN_FIELDS', ''))), function ($field) {
+        return $field !== '';
+    })),
 
     // Allow Markdown in just the text and title fields
     // 'markdown_in_attachments' => ['text', 'title']
