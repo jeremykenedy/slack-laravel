@@ -5,6 +5,7 @@ namespace jeremykenedy\Slack\Laravel\Tests;
 use Illuminate\Console\Application as Artisan;
 use Illuminate\Filesystem\Filesystem;
 use jeremykenedy\Slack\Laravel\Console\InstallCommand;
+use jeremykenedy\Slack\Laravel\Tests\Fixtures\CustomConfigApplication;
 use Symfony\Component\Console\Tester\CommandTester;
 
 class ConsoleTest extends PackageTestCase
@@ -93,19 +94,13 @@ class ConsoleTest extends PackageTestCase
         $this->withApplication(function ($app) {
             $directory = $app->basePath().'/custom-config';
 
-            if (method_exists($app, 'useConfigPath')) {
-                $app->useConfigPath($directory);
-            } else {
-                $app->instance('path.config', $directory);
-            }
-
             $artisan = new Artisan($app, $app['events'], $app->version());
             $tester = new CommandTester($artisan->find('slack:install'));
 
             $this->assertSame(0, $tester->execute([], ['interactive' => false]));
             $this->assertTrue(is_file($directory.'/slack.php'));
             $this->assertFalse(is_file($app->basePath().'/config/slack.php'));
-        });
+        }, [], CustomConfigApplication::class);
     }
 
     public function test_install_reports_a_failed_directory_creation()

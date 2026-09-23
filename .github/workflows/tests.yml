@@ -61,9 +61,9 @@ jobs:
           --with 'laravel/framework:${{ matrix.laravel }}'
           --with 'phpunit/phpunit:${{ matrix.phpunit }}'
           --with 'guzzlehttp/guzzle:${{ matrix.guzzle }}'
-      - run: composer validate --strict
-      - run: composer lint
-      - run: composer test
+      - run: composer --no-plugins validate --strict
+      - run: composer --no-plugins lint
+      - run: composer --no-plugins test
 
   quality:
     name: Formatting and dependency audit

@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
 
 abstract class PackageTestCase extends TestCase
 {
-    protected function withApplication($callback, array $config = [])
+    protected function withApplication($callback, array $config = [], $applicationClass = Application::class)
     {
         if (version_compare(Application::VERSION, '5.0', '<')) {
             $this->markTestSkipped('Laravel 4 uses the legacy provider tests.');
@@ -22,9 +22,9 @@ abstract class PackageTestCase extends TestCase
         $files->makeDirectory($path.'/config', 0755, true);
         $files->makeDirectory($path.'/bootstrap/cache', 0755, true);
 
-        $app = new Application($path);
+        $app = new $applicationClass($path);
         $app->instance('config', new Repository(['slack' => $config]));
-        $app->instance('path.config', $path.'/config');
+        $app->instance('path.config', $app->configPath());
         $app->instance('files', $files);
         Facade::clearResolvedInstances();
         Facade::setFacadeApplication($app);
