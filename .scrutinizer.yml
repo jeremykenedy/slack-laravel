@@ -4,7 +4,7 @@ build:
         analysis:
             environment:
                 php:
-                    version: '8.3.33'
+                    version: '8.2.0'
                     ini:
                         xdebug.mode: coverage
             dependencies:
