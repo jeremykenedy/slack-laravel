@@ -46,7 +46,7 @@ jobs:
           - {php: '8.5', laravel: '^12.0', phpunit: '^13.0', guzzle: '^7.0', composer: 'v2'}
           - {php: '8.5', laravel: '^13.0', phpunit: '^13.0', guzzle: '^7.0', composer: 'v2'}
     steps:
-      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
       - uses: shivammathur/setup-php@b604ade2a87db23f8871b7182e69ec5e75effb45
         with:
           php-version: ${{ matrix.php }}
@@ -89,7 +89,7 @@ jobs:
           - {php: '8.2', lumen: '^11.0', phpunit: '^11.5', composer: 'v2'}
           - {php: '8.5', lumen: '^11.0', phpunit: '^13.0', composer: 'v2'}
     steps:
-      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
       - uses: shivammathur/setup-php@b604ade2a87db23f8871b7182e69ec5e75effb45
         with:
           php-version: ${{ matrix.php }}
@@ -114,7 +114,7 @@ jobs:
     name: Formatting and dependency audit
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
       - uses: shivammathur/setup-php@b604ade2a87db23f8871b7182e69ec5e75effb45
         with:
           php-version: '8.5'
