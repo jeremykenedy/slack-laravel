@@ -21,8 +21,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
     /**
      * Instantiate the service provider.
      *
-     * @param mixed $app
-     *
+     * @param  mixed  $app
      * @return void
      */
     public function __construct($app)

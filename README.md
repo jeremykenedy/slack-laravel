@@ -1,165 +1,251 @@
-![Slack for Laravel](https://github-project-images.s3-us-west-2.amazonaws.com/logos/laravel-slack-logo.png)
+<p align="center">
+    <picture>
+        <source media="(prefers-color-scheme: dark)" srcset="art/banner-dark.svg">
+        <source media="(prefers-color-scheme: light)" srcset="art/banner-light.svg">
+        <img src="art/banner-light.svg" alt="Slack for Laravel" width="800">
+    </picture>
+</p>
 
-# Slack for Laravel
-Laravel integration for the Slack, including facades and service providers. This package allows you to use [Slack for PHP](https://github.com/maknz/slack) easily and elegantly in your Laravel app.
+<p align="center">Send Slack webhook messages from Laravel with a facade, container bindings, and testing fakes.</p>
 
-[![Total Downloads](https://poser.pugx.org/jeremykenedy/slack-laravel/d/total.svg)](https://packagist.org/packages/jeremykenedy/slack-laravel)
-[![Latest Stable Version](https://poser.pugx.org/jeremykenedy/slack-laravel/v/stable.svg)](https://packagist.org/packages/jeremykenedy/slack-laravel)
-[![StyleCI](https://github.styleci.io/repos/97894373/shield?branch=master)](https://github.styleci.io/repos/97894373)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+<p align="center">
+    <a href="https://packagist.org/packages/jeremykenedy/slack-laravel"><img src="https://poser.pugx.org/jeremykenedy/slack-laravel/d/total.svg" alt="Total Downloads"></a>
+    <a href="https://packagist.org/packages/jeremykenedy/slack-laravel"><img src="https://poser.pugx.org/jeremykenedy/slack-laravel/v/stable.svg" alt="Latest Stable Version"></a>
+    <a href="https://github.com/jeremykenedy/slack-laravel/actions/workflows/tests.yml"><img src="https://github.com/jeremykenedy/slack-laravel/actions/workflows/tests.yml/badge.svg" alt="Tests"></a>
+    <a href="https://github.styleci.io/repos/97894373"><img src="https://github.styleci.io/repos/97894373/shield?branch=master" alt="StyleCI"></a>
+    <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License MIT"></a>
+</p>
 
-- [Slack for Laravel](#slack-for-laravel)
-    - [Requirements](#requirements)
-    - [Installation](#installation)
-        - [1. From your projects root folder in terminal run:](#1-from-your-projects-root-folder-in-terminal-run)
-        - [2a. Register App (Laravel 5.5 +)](#2a-register-app-laravel-55)
-        - [2b. Register App (Laravel 5.4 and below)](#2b-register-app-laravel-54-and-below)
-        - [3. Register App Alias (Laravel 5.4 and below)](#3-register-app-alias-laravel-54-and-below)
-        - [4. Publish Assets (All)](#4-publish-assets-all)
-        - [5. Create Webhook (All)](#5-create-webhook-all)
-        - [6. Configure `.env` (All)](#6-configure-env-all)
-    - [Configuration](#configuration)
-    - [Usage](#usage)
-    - [1. Include Class](#1-include-class)
-    - [2. Trigging Slack Messages](#2-trigging-slack-messages)
-          - [Send to Default Channel](#send-to-default-channel)
-          - [Send to Different Channel](#send-to-different-channel)
-          - [Send to Private Message](#send-to-private-message)
-      - [Faking in tests](#faking-in-tests)
-    - [Credits](#credits)
-    - [License](#license)
+## Table of Contents
 
-### Requirements
-* [Laravel 5.3 or newer](https://laravel.com/docs/installation)
+- [Framework Support](#framework-support)
+- [Requirements](#requirements)
+- [Installation](#installation)
+    - [Manual Registration](#manual-registration)
+- [Quick Start](#quick-start)
+    - [Message Options](#message-options)
+    - [Dependency Injection](#dependency-injection)
+- [Features](#features)
+- [Configuration](#configuration)
+- [Changing Frameworks](#changing-frameworks)
+- [Artisan Commands](#artisan-commands)
+- [Testing](#testing)
+    - [Faking Messages in Your Application](#faking-messages-in-your-application)
+    - [Running the Package Tests](#running-the-package-tests)
+- [License](#license)
 
-### Installation
-##### 1. From your projects root folder in terminal run:
+## Framework Support
+
+| Laravel | PHP versions exercised in CI | Registration |
+|---------|------------------------------|--------------|
+| 4.2 | 5.6 | Existing legacy provider |
+| 5.0 to 5.3 | 5.6 | Manual |
+| 5.4 | 7.0 | Manual |
+| 5.5 to 5.7 | 7.1 | Package discovery |
+| 5.8 and 6 | 7.2 | Package discovery |
+| 7 | 7.3 | Package discovery |
+| 8 | 7.3, 8.0 | Package discovery |
+| 9 | 8.0 | Package discovery |
+| 10 | 8.1 | Package discovery |
+| 11 | 8.2 | Package discovery |
+| 12 | 8.2, 8.3, 8.4, 8.5 | Package discovery |
+| 13 | 8.3, 8.4, 8.5 | Package discovery |
+
+These are compatibility checks, not a recommendation to run an unsupported PHP or Laravel release. Your application must also meet its Laravel version's requirements. The legacy Laravel 4 provider and `slack::` configuration bindings remain available for existing installations.
+
+The package runs on the server. Blade, Livewire, Vue, React, and Svelte applications use the same PHP integration. There are no package views, CSS assets, or JavaScript dependencies.
+
+## Requirements
+
+- PHP 5.6.4 or newer, with `mbstring` enabled.
+- Laravel and the PHP extensions required by your Laravel version.
+- An incoming webhook from your Slack workspace.
+
+The existing `jeremykenedy/slack` 2.x dependency and PHP minimum are unchanged. See the [upgrade notes](docs/upgrading.md) for compatibility details and the upstream PHP 8.4+ deprecation.
+
+## Installation
 
 ```bash
-    composer require jeremykenedy/slack-laravel
+composer require jeremykenedy/slack-laravel
+php artisan slack:install
 ```
 
-##### 2a. Register App (Laravel 5.5 +)
-Uses package auto discovery feature, no need to edit the `config/app.php` file.
-* Skip to [4. Publish Assets](#4.-publish-assets)
+Laravel 5.5 and newer discover the provider and `Slack` alias automatically. On older Laravel versions, register them first using the instructions below.
 
+The install command detects `config/slack.php` and leaves an existing file unchanged. It runs without prompts, does not send a test message, and does not edit `.env`. Install/update commands are available on Laravel 5 and newer.
 
-##### 2b. Register App (Laravel 5.4 and below)
-Register the package with laravel in `config/app.php` under `providers` with the following:
+[Create an incoming webhook](https://docs.slack.dev/messaging/sending-messages-using-incoming-webhooks/) and set its URL in your application's environment:
+
+```dotenv
+DEFAULT_SLACK_WEBHOOK_ENDPOINT=https://hooks.slack.com/services/REPLACE/WITH/YOUR_WEBHOOK
+```
+
+Keep the webhook URL private. If your application caches configuration, run `php artisan config:cache` after changing these settings.
+
+### Manual Registration
+
+For Laravel 5.0 to 5.4, add the provider and alias to the existing arrays in `config/app.php`:
 
 ```php
-    'providers' => [
-        jeremykenedy\Slack\Laravel\ServiceProvider::class,
-    ];
+'providers' => [
+    jeremykenedy\Slack\Laravel\ServiceProvider::class,
+],
+
+'aliases' => [
+    'Slack' => jeremykenedy\Slack\Laravel\Facade::class,
+],
 ```
 
-##### 3. Register App Alias (Laravel 5.4 and below)
-Register the package with laravel in `config/app.php` under `aliases` with the following:
-
-```php
-    'aliases' => [
-        'Slack' => jeremykenedy\Slack\Laravel\Facade::class,
-    ];
-```
-
-##### 4. Publish Assets (All)
-Publish the config file from your projects root folder in terminal by running:
+The original publish command remains available:
 
 ```bash
-    php artisan vendor:publish --tag=slacklaravel
+php artisan vendor:publish --tag=slacklaravel
 ```
 
-##### 5. Create Webhook (All)
-[Create an incoming webhook](https://my.slack.com/services/new/incoming-webhook) for each Slack team you'd like to send messages to. You'll need the webhook URL(s) in order to configure this package.
+## Quick Start
 
-##### 6. Configure `.env` (All)
-Configure Slack for Laravel in your `.env` file by adding and editing the following:
+Call the facade from a controller, job, listener, or other server-side application code:
 
 ```php
-DEFAULT_SLACK_WEBHOOK_ENDPOINT=https://hooks.slack.com/services/XXXXXXXX/XXXXXXXX/XXXXXXXXXXXXXX
-DEFAULT_SLACK_CHANNEL='#general'
-DEFAULT_SLACK_USERNAME=Robot
-DEFAULT_SLACK_ICON=':ghost:'
-DEFAULT_SLACK_LINKNAMES_CONVERTED=FALSE
-DEFAULT_SLACK_UNFURL_LINKS_STATUS=FALSE
-DEFAULT_SLACK_UNFURL_MEDIA_STATUS=TRUE
-DEFAULT_SLACK_ALLOW_MARKDOWN=TRUE
-DEFAULT_SLACK_MARKDOWN_FIELDS="'text','title'"
+use jeremykenedy\Slack\Laravel\Facade as Slack;
+
+Slack::send('The deployment completed.');
 ```
 
-### Configuration
+The existing `\Slack::send(...)` alias works too. For Blade and Livewire applications, send messages from PHP actions. For Vue, React, or Svelte applications, send them from an authenticated Laravel endpoint or job. Do not expose webhook URLs to browser code.
 
-The config file comes with defaults and placeholders. Configure at least one team and any defaults you'd like to change.
-Default configurations are published into `config/slack.php` and the values can be set in the `.env` file like so:
-
-```
-DEFAULT_SLACK_WEBHOOK_ENDPOINT=https://hooks.slack.com/services/XXXXXXXX/XXXXXXXX/XXXXXXXXXXXXXX
-DEFAULT_SLACK_CHANNEL='#general'
-DEFAULT_SLACK_USERNAME=Robot
-DEFAULT_SLACK_ICON=':ghost:'
-DEFAULT_SLACK_LINKNAMES_CONVERTED=FALSE
-DEFAULT_SLACK_UNFURL_LINKS_STATUS=FALSE
-DEFAULT_SLACK_UNFURL_MEDIA_STATUS=TRUE
-DEFAULT_SLACK_ALLOW_MARKDOWN=TRUE
-DEFAULT_SLACK_MARKDOWN_FIELDS="'text','title'"
-```
-
-### Usage
-
-### 1. Include Class
-* Use the facade anywhere:
+### Message Options
 
 ```php
-\Slack::send('Hey');
+Slack::from('Release bot')->send('Version 2.7 is ready.');
+Slack::to('#releases')->send('The deployment completed.');
+Slack::to('@username')->send('Your export is ready.');
 ```
 
-### 2. Trigging Slack Messages
+Channel, username, icon, and direct-message overrides depend on your webhook type. [Modern Slack app webhooks use the channel and identity configured in Slack](https://docs.slack.dev/messaging/sending-messages-using-incoming-webhooks/); the override methods remain available for legacy integrations.
 
-###### Send to Default Channel
-* Send a message to the default channel
+For attachments and other message options, see the [Slack PHP client](https://github.com/jeremykenedy/slack).
+
+### Dependency Injection
+
+The facade and the concrete client resolve to the same shared instance:
 
 ```php
-    Slack::send('Hi Slack, from the API :)');
+use jeremykenedy\Slack\Client;
+
+class SendReleaseNotice
+{
+    private $slack;
+
+    public function __construct(Client $slack)
+    {
+        $this->slack = $slack;
+    }
+
+    public function send($version)
+    {
+        $this->slack->send('Released '.$version);
+    }
+}
 ```
 
-###### Send to Different Channel
-* Send a message to a different channel
+## Features
 
-```php
-    Slack::to('#testing')->send('Hi Testing!');
+- Laravel package discovery and manual provider registration.
+- A shared client available through the facade or constructor injection.
+- Existing environment variables and configuration publishing support.
+- Install and update commands that preserve application configuration.
+- Message fakes with channel-specific assertions and no webhook requests.
+- Compatibility tests across legacy and current Laravel releases.
+
+## Configuration
+
+Settings live in `config/slack.php`. Unpublished settings fall back to the package defaults on Laravel 5 and newer.
+
+| Key | Environment variable | Default |
+|-----|----------------------|---------|
+| `endpoint` | `DEFAULT_SLACK_WEBHOOK_ENDPOINT` | Empty string |
+| `channel` | `DEFAULT_SLACK_CHANNEL` | `#general` |
+| `username` | `DEFAULT_SLACK_USERNAME` | `Robot` |
+| `icon` | `DEFAULT_SLACK_ICON` | `null` |
+| `link_names` | `DEFAULT_SLACK_LINKNAMES_CONVERTED` | `false` |
+| `unfurl_links` | `DEFAULT_SLACK_UNFURL_LINKS_STATUS` | `false` |
+| `unfurl_media` | `DEFAULT_SLACK_UNFURL_MEDIA_STATUS` | `true` |
+| `allow_markdown` | `DEFAULT_SLACK_ALLOW_MARKDOWN` | `true` |
+| `markdown_in_attachments` | `DEFAULT_SLACK_MARKDOWN_FIELDS` | `[]` |
+
+Use a comma-separated list for attachment Markdown fields:
+
+```dotenv
+DEFAULT_SLACK_MARKDOWN_FIELDS=text,title
 ```
 
-###### Send to Private Message
-* Send a message to a private channel
+The previously documented `"'text','title'"` value is also accepted. Applications with an older published configuration should change that entry to a PHP array such as `['text', 'title']`, or adopt the parser from [the current configuration](src/config/config.php). The update command deliberately leaves published files alone.
 
-```php
-    Slack::to('@jeremykenedy')->send('Hi Jeremy!');
+Set `channel`, `username`, or `icon` to `null` in your configuration to use the webhook defaults. The [Slack PHP client](https://github.com/jeremykenedy/slack) controls transport behavior; this integration does not add automatic retries, which could duplicate messages.
+
+## Changing Frameworks
+
+This package does not choose or install a frontend framework. Existing Bootstrap, Bootstrap 5, Tailwind, Blade, Livewire, Vue, React, and Svelte applications keep their current views and build configuration after `composer update`.
+
+Run the update command to publish configuration only if it is missing:
+
+```bash
+php artisan slack:update
 ```
 
-#### Faking in tests
+No CSS/frontend selection, switch command, optional UI packages, or frontend rebuild is needed for this integration. If you change your application's frontend separately, follow that frontend's build instructions.
 
-Use the `fake` method on the Facade
+## Artisan Commands
+
+| Command | Description | Options |
+|---------|-------------|---------|
+| `slack:install` | Publish missing configuration; detect and preserve an existing installation. | Standard Artisan options only |
+| `slack:update` | Publish configuration if missing; leave existing settings untouched. | Standard Artisan options only |
+| `vendor:publish --tag=slacklaravel` | Original Laravel configuration publishing command. | Laravel's `vendor:publish` options |
+
+Both package commands work with `--no-interaction`. They do not accept `--force`, `--css`, or `--frontend`, and never overwrite your configuration. Composer updates do not run either command automatically.
+
+## Testing
+
+### Faking Messages in Your Application
 
 ```php
-    Slack::fake()
-```
+use jeremykenedy\Slack\Laravel\Facade as Slack;
 
-This provides the following
+Slack::fake();
 
-```php
-    Slack::assertMessageSent(function($messages) {
-        // search in all messages
+Slack::to('#releases')->send('Release ready');
+
+Slack::assertMessageSent();
+Slack::assertMessageSentTo('#releases');
+
+Slack::assertMessageSentTo('#releases', function ($messages) {
+    return $messages->contains(function ($message) {
+        return $message->getText() === 'Release ready';
     });
-
-    Slack::assertMessageSentTo($channel, function($messages) {
-        // search in all messages posted to $channel
-    });
+});
 ```
 
-### Credits
-* Most development credit must go to [maknz](https://github.com/maknz/slack-laravel).
-* This package was forked and improved. The original package states that it was no longer maintained.
-* This package was forked and modified to be compliant with [MIT](https://opensource.org/licenses/MIT) licencing standards for production use.
+Fakes retain the client's configured defaults, including changes made before `fake()`. Calling `fake()` again clears recorded messages. Assertion callbacks receive a collection and an optional second argument of `null`, as before. `assertMessageSentTo()` fails when nothing was sent to the requested channel, even without a callback.
 
-### License
-Slack for Laravel is licensed under the MIT license for both personal and commercial products. Enjoy!
+The fake intercepts messages sent through the facade or clients resolved from the container after `fake()`. Client instances retained before `fake()` are unchanged.
+
+### Running the Package Tests
+
+```bash
+composer install
+composer validate --strict
+composer lint
+composer test
+```
+
+Run `pint --test` with [Laravel Pint](https://laravel.com/docs/pint) installed on a current PHP runtime. Pint is kept out of the package's dependencies so older PHP installations can still resolve the package and its tests.
+
+GitHub Actions runs the suite on PHP 5.6 through 8.5, Laravel 4.2 through 13, and Guzzle 4 through 7. Version-specific provider tests are skipped on other Laravel versions. Tests use isolated configuration directories and fake HTTP clients; they do not send messages to Slack.
+
+The formatting job also audits the current dependency set. Older compatibility jobs allow historical dependencies so they can exercise those releases; that does not certify old framework dependencies as secure.
+
+## License
+
+This package is open-sourced software licensed under the [MIT license](LICENSE).
