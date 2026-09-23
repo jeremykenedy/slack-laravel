@@ -13,7 +13,7 @@ class SlackFakeTest extends TestCase
     public function test_it_records_messages_without_sending_http_requests()
     {
         $http = $this->getMockBuilder(Guzzle::class)->getMock();
-        $http->expects($this->never())->method('__call');
+        $http->expects($this->never())->method(method_exists(Guzzle::class, 'post') ? 'post' : '__call');
         $fake = new SlackFake('https://example.invalid/webhook', [], $http);
 
         $message = $fake->to('#releases')->send('Release ready');
