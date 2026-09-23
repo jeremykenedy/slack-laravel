@@ -1,4 +1,5 @@
 build:
+    image: default-jammy
     nodes:
         analysis:
             environment:
