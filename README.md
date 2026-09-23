@@ -293,7 +293,7 @@ composer lint
 composer test
 ```
 
-The committed lockfile records the development dependencies for PHP 8.4 or newer so Dependabot can audit and update them. It does not constrain applications that install this package. When testing this repository on older PHP versions, run `composer update` to resolve compatible development dependencies, as the compatibility jobs do.
+The committed lockfile records the development dependencies for PHP 8.4.1 or newer so Dependabot can audit and update them. It does not constrain applications that install this package. When testing this repository on older PHP versions, run `composer update` to resolve compatible development dependencies, as the compatibility jobs do.
 
 Run `pint --test` with [Laravel Pint](https://laravel.com/docs/pint) installed on a current PHP runtime. Pint is kept out of the package's dependencies so older PHP installations can still resolve the package and its tests.
 
