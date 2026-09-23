@@ -137,7 +137,11 @@ class LumenServiceProviderTest extends TestCase
 
             $provider = new ServiceProvider($app);
             $app->register($provider);
-            $app->boot();
+
+            if (method_exists($app, 'boot')) {
+                $app->boot();
+            }
+
             $callback($app, $provider);
         } finally {
             LaravelFacade::clearResolvedInstances();

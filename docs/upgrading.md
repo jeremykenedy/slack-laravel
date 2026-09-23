@@ -38,6 +38,8 @@ Production source files retain PHP 5.6-compatible syntax. CI exercises every Lar
 
 The upstream `jeremykenedy/slack` 2.4 client declares an implicitly nullable constructor argument. PHP 8.4 and newer emit a deprecation when that class is loaded. This does not fail the package tests, but applications that promote dependency deprecations to exceptions should account for it before upgrading PHP. The integration does not suppress that warning or patch vendor files.
 
+Lumen 11's Illuminate console component also emits a null array-offset deprecation when commands write output on PHP 8.5. The command tests pass, but applications that convert deprecations to exceptions should test their framework dependencies before upgrading PHP.
+
 Compatibility coverage for end-of-life runtimes is separate from security support. Use maintained PHP and Laravel versions for new deployments. The current-dependency CI job runs Composer's security audit without disabling security checks.
 
 ## Webhook behavior
