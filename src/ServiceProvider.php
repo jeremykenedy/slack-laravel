@@ -16,7 +16,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
     /**
      * The actual provider.
      *
-     * @var \Illuminate\Support\ServiceProvider
+     * @var ServiceProviderLaravel4|ServiceProviderLaravel5
      */
     protected $provider;
 
@@ -30,7 +30,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
     {
         parent::__construct($app);
 
-        $this->provider = $this->getProvider();
+        $this->provider = $this->getProvider($app);
     }
 
     /**
@@ -40,7 +40,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
      */
     public function boot()
     {
-        return $this->provider->boot();
+        $this->provider->boot();
     }
 
     /**
@@ -50,18 +50,16 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
      */
     public function register()
     {
-        return $this->provider->register();
+        $this->provider->register();
     }
 
     /**
      * Return the service provider for the particular Laravel version.
      *
-     * @return mixed
+     * @return ServiceProviderLaravel4|ServiceProviderLaravel5
      */
-    private function getProvider()
+    private function getProvider($app)
     {
-        $app = $this->app;
-
         if ($app instanceof Application) {
             return new ServiceProviderLaravel5($app);
         }

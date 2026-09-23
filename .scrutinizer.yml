@@ -4,12 +4,15 @@ build:
         analysis:
             environment:
                 php:
-                    version: '8.3'
+                    version: '8.2.0'
                     ini:
                         xdebug.mode: coverage
             dependencies:
                 override:
-                    - composer update --no-interaction --prefer-dist
+                    - composer require --dev 'laravel/framework:^11.0' 'laravel/lumen-framework:^11.0' --no-update --no-interaction
+                    - command: composer update --no-interaction --prefer-dist
+                      environment:
+                          COMPOSER_NO_SECURITY_BLOCKING: '1'
             tests:
                 override:
                     - php-scrutinizer-run
