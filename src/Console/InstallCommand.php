@@ -26,24 +26,13 @@ class InstallCommand extends Command
         $path = function_exists('config_path')
             ? config_path('slack.php')
             : $this->laravel->basePath('config/slack.php');
-        $directory = dirname($path);
-
         if ($this->files->exists($path)) {
             $this->info('Slack configuration already exists and was left unchanged.');
 
             return 0;
         }
 
-        if (! $this->files->isDirectory($directory)
-            && ! $this->files->makeDirectory($directory, 0755, true, true)) {
-            $this->error('Unable to create the configuration directory. Check its permissions.');
-
-            return 1;
-        }
-
-        if (! $this->files->copy(dirname(__DIR__).'/config/config.php', $path)) {
-            $this->error('Unable to publish Slack configuration. Check directory permissions.');
-
+        if (! $this->publishConfiguration($path)) {
             return 1;
         }
 
@@ -59,5 +48,25 @@ class InstallCommand extends Command
     public function fire()
     {
         return $this->handle();
+    }
+
+    private function publishConfiguration($path)
+    {
+        $directory = dirname($path);
+
+        if (! $this->files->isDirectory($directory)
+            && ! $this->files->makeDirectory($directory, 0755, true, true)) {
+            $this->error('Unable to create the configuration directory. Check its permissions.');
+
+            return false;
+        }
+
+        if (! $this->files->copy(dirname(__DIR__).'/config/config.php', $path)) {
+            $this->error('Unable to publish Slack configuration. Check directory permissions.');
+
+            return false;
+        }
+
+        return true;
     }
 }
