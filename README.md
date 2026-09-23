@@ -25,6 +25,7 @@
     - [Lumen Registration](#lumen-registration)
 - [Quick Start](#quick-start)
     - [Message Options](#message-options)
+    - [Sharing Files](#sharing-files)
     - [Dependency Injection](#dependency-injection)
 - [Features](#features)
 - [Configuration](#configuration)
@@ -158,6 +159,26 @@ Channel, username, icon, and direct-message overrides depend on your webhook typ
 
 For attachments and other message options, see the [Slack PHP client](https://github.com/jeremykenedy/slack).
 
+### Sharing Files
+
+Incoming webhooks send messages. Their attachments format message content; they do not upload local files.
+
+To share an error log with this package, provide a download link that your intended readers can access:
+
+```php
+Slack::send('Error log: <https://example.com/logs/download/123|Download log>');
+```
+
+Keep the download protected and remove credentials and personal information from logs before sharing them.
+
+To upload the file into Slack itself, use the separate [Slack Files API](https://docs.slack.dev/messaging/working-with-files/) with a bot or user token that has the `files:write` scope:
+
+1. Call `files.getUploadURLExternal` with the filename and its length in bytes.
+2. POST the file contents to the returned `upload_url`.
+3. Call `files.completeUploadExternal` with the returned file ID and the destination `channel_id`.
+
+The token must have access to the destination channel. These calls use token authentication, not the incoming webhook URL, and are outside this package's webhook client.
+
 ### Dependency Injection
 
 The facade and the concrete client resolve to the same shared instance:
@@ -271,6 +292,8 @@ composer validate --strict
 composer lint
 composer test
 ```
+
+The committed lockfile records the development dependencies for PHP 8.4 or newer so Dependabot can audit and update them. It does not constrain applications that install this package. When testing this repository on older PHP versions, run `composer update` to resolve compatible development dependencies, as the compatibility jobs do.
 
 Run `pint --test` with [Laravel Pint](https://laravel.com/docs/pint) installed on a current PHP runtime. Pint is kept out of the package's dependencies so older PHP installations can still resolve the package and its tests.
 

@@ -120,6 +120,9 @@ jobs:
           php-version: '8.5'
           tools: composer:v2, pint
           coverage: none
+      - run: composer install --no-interaction --prefer-dist
+      - run: composer test
+      - run: composer audit
       - run: composer update --no-interaction --prefer-dist
       - run: composer validate --strict
       - run: pint --test

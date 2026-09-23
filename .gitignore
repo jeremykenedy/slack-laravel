@@ -26,7 +26,6 @@ Thumbs.db
 
 /vendor
 composer.phar
-composer.lock
 .DS_Store
 /.phpintel
 /.phpunit.cache
