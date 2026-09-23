@@ -47,7 +47,7 @@ jobs:
           - {php: '8.5', laravel: '^13.0', phpunit: '^13.0', guzzle: '^7.0', composer: 'v2'}
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
-      - uses: shivammathur/setup-php@b604ade2a87db23f8871b7182e69ec5e75effb45
+      - uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240
         with:
           php-version: ${{ matrix.php }}
           extensions: mbstring, dom, curl, xml, xmlwriter, ${{ matrix.php == '5.6' && 'mcrypt' || '' }}
@@ -90,7 +90,7 @@ jobs:
           - {php: '8.5', lumen: '^11.0', phpunit: '^13.0', composer: 'v2'}
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
-      - uses: shivammathur/setup-php@b604ade2a87db23f8871b7182e69ec5e75effb45
+      - uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240
         with:
           php-version: ${{ matrix.php }}
           extensions: mbstring, dom, curl, xml, xmlwriter, ${{ matrix.php == '5.6' && 'mcrypt' || '' }}
@@ -115,7 +115,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
-      - uses: shivammathur/setup-php@b604ade2a87db23f8871b7182e69ec5e75effb45
+      - uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240
         with:
           php-version: '8.5'
           tools: composer:v2, pint
