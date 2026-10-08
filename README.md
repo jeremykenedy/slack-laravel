@@ -9,9 +9,6 @@
 <p align="center">Send Slack webhook messages from Laravel or Lumen with a facade, container bindings, and testing fakes.</p>
 
 <p align="center">
-    
-    
-    
     <a href="https://packagist.org/packages/jeremykenedy/slack-laravel"><img src="https://poser.pugx.org/jeremykenedy/slack-laravel/d/total.svg" alt="Total Downloads"></a>
     <a href="https://packagist.org/packages/jeremykenedy/slack-laravel"><img src="https://poser.pugx.org/jeremykenedy/slack-laravel/v/stable.svg" alt="Latest Stable Version"></a>
     <a href="https://github.com/jeremykenedy/slack-laravel/actions/workflows/tests.yml"><img src="https://github.com/jeremykenedy/slack-laravel/actions/workflows/tests.yml/badge.svg" alt="Tests"></a>
